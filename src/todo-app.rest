@@ -1,0 +1,44 @@
+### Register a new user
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "password123"
+}
+
+### Login with an existing user
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "password123"
+}
+
+### Get todos (Protected)
+GET http://localhost:3000/todos
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI5MjA3MTI0LCJleHAiOjE3MjkyOTM1MjR9.3jQ3LH9kiyrXXzPXHPQMmrbZRh0f_sh8F0NzbRb4WQc
+
+### Add a new todo (Protected)
+POST http://localhost:3000/todos
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI5MjA3MTI0LCJleHAiOjE3MjkyOTM1MjR9.3jQ3LH9kiyrXXzPXHPQMmrbZRh0f_sh8F0NzbRb4WQc
+
+{
+  "task": "Finish coding the project"
+}
+
+### Update a todo (Protected)
+PUT http://localhost:3000/todos/1
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI4ODc2MjM2LCJleHAiOjE3Mjg5NjI2MzZ9.ifRrBVRe2m9k3fTb58nn4ssY1N-YD2EDnecdzjWn5nE
+
+{
+  "task": "Complete project documentation",
+  "completed": true
+}
+
+### Delete a todo (Protected)
+DELETE http://localhost:3000/todos/1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI4ODc2MjM2LCJleHAiOjE3Mjg5NjI2MzZ9.ifRrBVRe2m9k3fTb58nn4ssY1N-YD2EDnecdzjWn5nE

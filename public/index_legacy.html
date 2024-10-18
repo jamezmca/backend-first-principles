@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Protected Todo App</title>
+</head>
+
+<body>
+    <h1>Todo App</h1>
+
+    <div id="auth">
+        <h2>Register</h2>
+        <input type="text" id="register-username" placeholder="Username">
+        <input type="password" id="register-password" placeholder="Password">
+        <button onclick="register()">Register</button>
+
+        <h2>Login</h2>
+        <input type="text" id="login-username" placeholder="Username">
+        <input type="password" id="login-password" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div id="todos" style="display: none">
+        <h2>My Todos</h2>
+        <ul id="todo-list"></ul>
+        <input type="text" id="new-todo" placeholder="New task">
+        <button onclick="addTodo()">Add Todo</button>
+    </div>
+
+    <script>
+        let token = localStorage.getItem('token')
+        let isLoading = true
+        let isAuthenticating = false
+
+        const apiBase = '/'
+
+        async function register() {
+            const username = document.getElementById('register-username').value
+            const password = document.getElementById('register-password').value
+
+            const response = await fetch(apiBase + 'auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+            const data = await response.json()
+            if (data.token) {
+                token = data.token
+                localStorage.setItem('token', token)
+                showTodos()
+            }
+        }
+
+        async function login() {
+            const username = document.getElementById('login-username').value
+            const password = document.getElementById('login-password').value
+
+            const response = await fetch(apiBase + 'auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+            const data = await response.json()
+            if (data.token) {
+                token = data.token
+                localStorage.setItem('token', token)
+                showTodos()
+            }
+        }
+
+        async function fetchTodos() {
+            const response = await fetch(apiBase + 'todos', {
+                headers: { 'Authorization': token }
+            })
+            const todos = await response.json()
+            const todoList = document.getElementById('todo-list')
+            todoList.innerHTML = ''
+            todos.forEach(todo => {
+                const li = document.createElement('li')
+                li.textContent = `${todo.task} - ${todo.completed ? 'Completed' : 'Pending'}`
+                todoList.appendChild(li)
+            })
+        }
+
+        async function addTodo() {
+            const task = document.getElementById('new-todo').value
+
+            await fetch(apiBase + 'todos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                },
+                body: JSON.stringify({ task })
+            })
+            fetchTodos()
+        }
+
+        function showTodos() {
+            document.getElementById('auth').style.display = 'none'
+            document.getElementById('todos').style.display = 'block'
+            fetchTodos()
+        }
+
+        function showAuthenticate() {
+
+        }
+
+        if (token) {
+            try {
+                showTodos()
+            } catch (err) {
+                console.log(err.message)
+                showAuthenticate()
+                isLoading(false)
+            }
+        } else {
+            showAuthenticate()
+            isLoading(false)
+        }
+    </script>
+</body>
+
+</html>
