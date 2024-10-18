@@ -95,7 +95,7 @@ Now the app will be accessible at `http://localhost:3000`.
 1. **Clone the Repository**:
 
 ```bash
-git clone https://github.com/your-username/backend-todo-app.git
+git clone https://github.com/jamezmca/backend-first-principles.git
 cd backend-todo-app
 ```
 
