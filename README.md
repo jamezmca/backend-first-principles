@@ -1,4 +1,4 @@
-# BACKEND FULL COURSE - Node.JS Express.JS & Node:SQLite
+# Backend First Principles - Node.JS Express.JS & Node:SQLite
 
 This guide provides an overview of the codebase, the functionality of the app, and detailed instructions on how to set up and run the app. Make sure to follow all steps carefully, especially regarding Node.js version requirements.
 
